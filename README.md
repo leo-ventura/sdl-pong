@@ -1,5 +1,5 @@
 # Pong
-Project to develop a SDL version of Atari's Pong w/ @matheorii.
+Project to develop a SDL version of Atari's Pong w/ @Matheorii.
 
 ### About SDL2
 To install SDL2, check this link [here](https://wiki.libsdl.org/Installation) for more instructions.
