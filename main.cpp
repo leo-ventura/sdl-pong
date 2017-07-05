@@ -5,14 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-
-// functions forward declaration
-int init();
-int loadMedia();
-SDL_Surface *getMedia(char*);
-void closeAll();
-
-// global variables forward declaration
+#include "functions.h"
+#include "global.h"
 
 using namespace std;
 
@@ -20,6 +14,7 @@ int main(int argc, char const *argv[]) {
   // starts SDL and load all medias
   if (!init() || !loadMedia()) {
     cout << "SDL could not initialize. Error: " << SDL_GetError() << endl;
+    return 1;
   }
   gQuit = false;
   menu();

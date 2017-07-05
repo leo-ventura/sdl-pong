@@ -31,30 +31,19 @@ bool init() {
   return true;
 }
 
-bool loadMedia() {
-  gBarSurface = getMedia("./images/bar.png");
-  gBallSurface = getMedia("./images/ball.png");
-
-  if (!gBarSurface || !gBallSurface) {
-    cout << "Could not load media! Error: " << SDL_GetError();
-    return false;
-  }
-  return true;
-}
-
-SDL_Surface *getMedia(char *pwd) {
+SDL_Surface *getMedia(string pwd) {
   SDL_Surface *optimizedSurface = NULL;
 
   SDL_Surface *loadedSurface = IMG_Load(pwd);
 
   if(loadedSurface == NULL) {
-    cout << "Unable to load image! SDL_image Error: " << IMG_GetError();
+    cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << endl;
     gQuit = true;
   }
 
   optimizedSurface = SDL_ConvertSurface(loadedSurface, gScreenSurface->format, 0);
   if(optimizedSurface == NULL) {
-    cout << "Unable to optimize image! SDL Error: " << SDL_GetError();
+    cout << "Unable to optimize image! SDL Error: " << SDL_GetError() << endl;
     gQuit = true;
   }
 
@@ -63,4 +52,53 @@ SDL_Surface *getMedia(char *pwd) {
   return optimizedSurface;
 }
 
-void closeAll() {}
+bool loadMedia() {
+  gBarSurface = getMedia("./images/bar.png");
+  gBallSurface = getMedia("./images/ball.png");
+
+  if (!gBarSurface || !gBallSurface) {
+    cout << "Could not load media! Error: " << SDL_GetError() << endl;
+    return false;
+  }
+  return true;
+}
+
+void closeAll() {
+
+  SDL_FreeSurface(gScreenSurface);
+  gScreenSurface = NULL;
+
+  SDL_DestroyWindow(gWindow);
+  gWindow = NULL;
+}
+
+void menu() {
+  int cursor = 0;
+  SDL_Event e;
+
+  while(!gQuit) {
+    while (SDL_PollEvent(&e) != 0) {
+      switch(e.type) {
+        case SDL_QUIT:
+          gQuit = true;
+          break;
+        case SDL_KEYDOWN:
+          if (e.key.keysym.sym == SDLK_RETURN) {
+            switch(cursor) {
+              case 0:
+                startGame();
+                break;
+              case 1:
+                help();
+                break;
+              case 2:
+                gQuit = true;
+                break;
+            }
+          }
+          // lots of things to add here
+          break;
+      }
+    }
+  }
+}
