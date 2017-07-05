@@ -5,7 +5,7 @@ IMAGE_FLAGS=-lSDL2_image
 MIXER_FLAGS=-lSDL2_mixer
 FONTS_FLAGS=-lSDL2_ttf
 SFLAGS=-lSDL2
-SOURCES=main.c functions.c global.c
+SOURCES=main.cpp functions.cpp global.cpp
 OBJECTS=main.o functions.o global.o
 BINARIES=main
 
