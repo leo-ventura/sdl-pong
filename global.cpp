@@ -5,6 +5,7 @@
 #include "global.h"
 
 // initialize global variables here
-bool gQuit(false);
-SDL_Surface *gScreenSurface(NULL);
-SDL_Window *gWindow(NULL);
+bool gQuit = false;
+SDL_Texture *gTexture = NULL;
+SDL_Renderer *gRenderer = NULL;
+SDL_Window *gWindow = NULL;
