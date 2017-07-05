@@ -16,11 +16,18 @@ bool init() {
   }
 
   gWindow = SDL_CreateWindow("Hey! Enjoy your little Pong!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-
   if(gWindow == NULL) {
     cout << "Window could not be created! SDL Error: " << SDL_GetError();
     return false;
   }
+
+  gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+  if(!gRenderer) {
+    cout << "Renderer could not be created! Error: " << SDL_GetError() << endl;
+  }
+
+  // initializes renderer color
+  SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
   int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
   if(!(IMG_Init(imgFlags) & imgFlags)) {
@@ -31,30 +38,28 @@ bool init() {
   return true;
 }
 
-SDL_Surface *getMedia(string pwd) {
-  SDL_Surface *optimizedSurface = NULL;
+SDL_Surface *getTexture(string pwd) {
+  SDL_Texture* newTexture = NULL;
 
   SDL_Surface *loadedSurface = IMG_Load(pwd);
 
-  if(loadedSurface == NULL) {
+  if(!loadedSurface) {
     cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << endl;
     gQuit = true;
   }
 
-  optimizedSurface = SDL_ConvertSurface(loadedSurface, gScreenSurface->format, 0);
-  if(optimizedSurface == NULL) {
-    cout << "Unable to optimize image! SDL Error: " << SDL_GetError() << endl;
+  newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+  if (!newTexture) {
+    cout << "Unable to create texture! Error: " << SDL_GetError() << endl;
     gQuit = true;
   }
-
   SDL_FreeSurface(loadedSurface);
-
-  return optimizedSurface;
+  return newTexture;
 }
 
 bool loadMedia() {
-  gBarSurface = getMedia("./images/bar.png");
-  gBallSurface = getMedia("./images/ball.png");
+  gBarSurface = getTexture("./images/bar.png");
+  gBallSurface = getTexture("./images/ball.png");
 
   if (!gBarSurface || !gBallSurface) {
     cout << "Could not load media! Error: " << SDL_GetError() << endl;
@@ -65,11 +70,21 @@ bool loadMedia() {
 
 void closeAll() {
 
-  SDL_FreeSurface(gScreenSurface);
-  gScreenSurface = NULL;
+  SDL_DestroyTexture(gTexture);
+  gTexture = NULL;
 
+  SDL_DestroyRenderer(gRenderer);
   SDL_DestroyWindow(gWindow);
+  gRenderer = NULL;
   gWindow = NULL;
+
+  IMG_Quit();
+  SDL_Quit();
+}
+
+void startGame() {
+  SDL_Event e;
+
 }
 
 void menu() {
@@ -100,5 +115,13 @@ void menu() {
           break;
       }
     }
+    // fills the screen with the color set by SDL_SetRenderDrawColor
+    SDL_RenderClear(gRenderer);
+
+    // now we render the texture to the screen
+    SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+
+    // update screen/window (since we're using render, there's no SDL_UpdateWindowSurface)
+    SDL_RenderPresent(gRenderer);
   }
 }
