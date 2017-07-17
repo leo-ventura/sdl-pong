@@ -80,7 +80,8 @@ void closeAll() {
 
 void startGame() {
   SDL_Event e;
-
+  SDL_Rect srcBar, dstBar;
+  BAR bar;
 }
 
 void menu() {
