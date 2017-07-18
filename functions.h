@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 

@@ -18,11 +18,11 @@ void Bar::setBar(int x, int y, int w, int h, SDL_Surface *surf) {
   this->surf = surf;
 }
 
+void Bar::setStepY(int stpY) {stepY = stpY;}
+
 int Bar::getX() {return x;}
 
 int Bar::getY() {return y;}
-
-int Bar::getStepX() {return stepX;}
 
 int Bar::getStepY() {return stepY;}
 
@@ -31,3 +31,5 @@ int Bar::getW() {return w;}
 int Bar::getH() {return h;}
 
 SDL_Surface* Bar::getSurf() {return surf;}
+
+void Bar::move() {y += stepY;}

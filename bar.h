@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #ifndef BAR_H
 #define BAR_H
 
@@ -7,7 +5,7 @@ class Bar {
 
 private:
   int x, y;
-  int stepX, stepY;
+  int stepY;
   int w, h;
   SDL_Surface *surf;
 
@@ -17,15 +15,18 @@ public:
 
   // set functions
   void setBar(int, int, int, int, SDL_Surface*);
+  void setStepY(int);
 
   // get functions
   int getX();
   int getY();
-  int getStepX();
   int getStepY();
   int getW();
   int getH();
   SDL_Surface* getSurf();
+
+  // other functions
+  void move();
 };
 
 #endif
