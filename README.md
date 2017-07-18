@@ -17,7 +17,7 @@ sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf
 ```
 
 ### Compiling on Ubuntu
-  - To download and compile the code, you just have to run the following code:
+  - To download and compile, you just have to run the following code:
     ```
     sudo apt-get install git
     git clone https://github.com/leo-ventura/sdl-pong.git
