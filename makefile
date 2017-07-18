@@ -24,4 +24,4 @@ globais.o: global.cpp
 	$(CC) -c global.cpp $(CFLAGS) $(SFLAGS) $(IMAGE_FLAGS) $(MIXER_FLAGS) $(FONTS_FLAGS)
 
 clean:
-	rm -rf *.o *.exe *.bak *.c~ $(BINARIES) core a.out
+	rm -rf *.o *.exe *.bak *.cpp~ $(BINARIES) core a.out

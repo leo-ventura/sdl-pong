@@ -7,6 +7,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "functions.h"
 #include "global.h"
+#include "bar.h"
 
 using namespace std;
 
@@ -16,7 +17,6 @@ int main(int argc, char const *argv[]) {
     cout << "SDL could not initialize. Error: " << SDL_GetError() << endl;
     return 1;
   }
-  gQuit = false;
   menu();
   closeAll();
   return 0;

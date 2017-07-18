@@ -1,9 +1,17 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#define _DEBUG true
+#define WINDOW_WIDTH 720
+#define WINDOW_HEIGHT 600
+#define BAR_WIDTH 30
+#define BAR_HEIGHT 100
+
 extern bool gQuit;
-extern SDL_Texture *gTexture;
-extern SDL_Renderer *gRenderer;
+extern SDL_Surface *gScreenSurface;
 extern SDL_Window *gWindow;
+extern SDL_Surface *gBarSurface;
 
 #endif
