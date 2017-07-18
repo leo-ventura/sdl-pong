@@ -108,7 +108,8 @@ void startGame() {
   SDL_Rect srcLeftBar, dstLeftBar;
 
   // declaring left bar
-  Bar leftBar(30, 100, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
+  Bar leftBar(30, WINDOW_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
+  leftBar.setStepY(0);
 
   // game loop
   while(!gQuit) {
@@ -118,9 +119,24 @@ void startGame() {
           gQuit = true;
           break;
         case SDL_KEYDOWN:
+          if (e.key.keysym.sym == SDLK_ESCAPE)
+            gQuit = true;
+          //else if (e.key.keysym.sym == SDLK_SPACE)
+          else if (e.key.keysym.sym == SDLK_w)
+            leftBar.setStepY(-1);
+          else if (e.key.keysym.sym == SDLK_s)
+            leftBar.setStepY(1);
+          //else if (e.key.keysym.sym == SDLK_UP)
+            //rightBar.setStepY(1);
+          //else if (e.key.keysym.sym == SDLK_DOWN)
+            //rightBar.setStepY(-1);
           break;
       }
     }
+
+    leftBar.move();
+    if (leftBar.getY() < 0 || leftBar.getY() > WINDOW_HEIGHT - BAR_HEIGHT)
+      leftBar.setStepY(0);
 
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00));
 
@@ -131,6 +147,7 @@ void startGame() {
       gQuit = true;
     }
 
+    SDL_Delay(5);
     SDL_UpdateWindowSurface(gWindow);
   }
 }
