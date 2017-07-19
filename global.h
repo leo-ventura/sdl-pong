@@ -4,8 +4,8 @@
 #define GLOBAL_H
 
 #define _DEBUG true
-#define WINDOW_WIDTH 720
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1080
+#define WINDOW_HEIGHT 660
 #define BAR_WIDTH 30
 #define BAR_HEIGHT 100
 

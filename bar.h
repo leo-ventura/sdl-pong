@@ -26,7 +26,7 @@ public:
   SDL_Surface* getSurf();
 
   // other functions
-  void move();
+  void move(int, int);
 };
 
 #endif
