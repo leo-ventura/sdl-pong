@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> // don't know why I have to include here
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
@@ -13,5 +11,6 @@ extern bool gQuit;
 extern SDL_Surface *gScreenSurface;
 extern SDL_Window *gWindow;
 extern SDL_Surface *gBarSurface;
+extern SDL_Surface *gBallSurface;
 
 #endif
