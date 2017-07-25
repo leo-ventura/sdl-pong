@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "global.h"
 #include "bar.cpp" // I don't know why it's not working including "bar.h"
+#include "ball.h"
 
 using namespace std;
 
@@ -63,10 +64,10 @@ SDL_Surface *getMedia(string pwd) {
 
 bool loadMedia() {
 
-  gBarSurface = getMedia("./images/bar.png");
-  // gBallSurface = getMedia("./images/ball.png");
+  gBarSurface = getMedia("../images/bar.png");
+  gBallSurface = getMedia("../images/ball.png");
 
-  if (!gBarSurface /*|| !gBallSurface*/) {
+  if (!gBarSurface || !gBallSurface) {
     cout << "Could not load media! Error: " << SDL_GetError() << endl;
     return false;
   }
@@ -111,6 +112,7 @@ void startGame() {
   // declaring left bar
   Bar leftBar(30, WINDOW_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
   Bar rightBar(WINDOW_WIDTH - BAR_WIDTH - 30, WINDOW_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
+  Ball ball(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, BALL_WIDTH, BALL_HEIGHT, gBallSurface);
 
   // game loop
   while(!gQuit) {
@@ -137,6 +139,7 @@ void startGame() {
 
     leftBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
     rightBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
+    ball.move(BAR_HEIGHT, BAR_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH);
 
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00));
 

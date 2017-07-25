@@ -6,6 +6,8 @@
 #define WINDOW_HEIGHT 660
 #define BAR_WIDTH 30
 #define BAR_HEIGHT 100
+#define BALL_WIDTH 15
+#define BALL_HEIGHT 15
 
 extern bool gQuit;
 extern SDL_Surface *gScreenSurface;
