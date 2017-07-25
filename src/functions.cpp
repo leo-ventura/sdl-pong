@@ -9,6 +9,7 @@
 #include "global.h"
 #include "bar.cpp" // I don't know why it's not working including "bar.h"
 #include "ball.h"
+#include "ball.cpp"
 
 using namespace std;
 
@@ -62,7 +63,7 @@ SDL_Surface *getMedia(string pwd) {
   return optimizedSurface;
 }
 
-bool loadMedia() {
+  bool loadMedia() {
 
   gBarSurface = getMedia("../images/bar.png");
   gBallSurface = getMedia("../images/ball.png");
@@ -109,7 +110,10 @@ void startGame() {
   SDL_Rect srcLeftBar, dstLeftBar;
   SDL_Rect srcRightBar, dstRightBar;
 
-  // declaring left bar
+  // ball's source and distance
+  SDL_Rect srcBall, dstBall;
+
+  // declaring left bar, right bar and ball
   Bar leftBar(30, WINDOW_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
   Bar rightBar(WINDOW_WIDTH - BAR_WIDTH - 30, WINDOW_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, gBarSurface);
   Ball ball(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, BALL_WIDTH, BALL_HEIGHT, gBallSurface);
@@ -124,7 +128,18 @@ void startGame() {
         case SDL_KEYDOWN:
           if (e.key.keysym.sym == SDLK_ESCAPE)
             gQuit = true;
-          //else if (e.key.keysym.sym == SDLK_SPACE)
+          else if (e.key.keysym.sym == SDLK_SPACE) {
+            srand(time(NULL));
+            if(rand()%2) {
+              ball.setStepX(1);
+              if(rand()%2) ball.setStepY(1);
+              else ball.setStepY(-1);
+            } else {
+              ball.setStepX(-1);
+              if(rand()%2) ball.setStepY(1);
+              else ball.setStepY(-1);
+            }
+          }
           else if (e.key.keysym.sym == SDLK_w)
             leftBar.setStepY(-1);
           else if (e.key.keysym.sym == SDLK_s)
@@ -139,7 +154,7 @@ void startGame() {
 
     leftBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
     rightBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
-    ball.move(BAR_HEIGHT, BAR_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH);
+    ball.move(BALL_HEIGHT, BALL_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH);
 
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00));
 
@@ -147,9 +162,12 @@ void startGame() {
     // putDimensions(SDL_Rect* src, int srcx, int srcy, int srcw, int srch, SDL_Rect* dst, int dstx, int dsty);
     putDimensions(&srcLeftBar, 0, 0, BAR_WIDTH, BAR_HEIGHT, &dstLeftBar, leftBar.getX(), leftBar.getY());
     putDimensions(&srcRightBar, 0, 0, BAR_WIDTH, BAR_HEIGHT, &dstRightBar, rightBar.getX(), rightBar.getY());
+    putDimensions(&srcBall, 0, 0, BALL_WIDTH, BALL_HEIGHT, &dstBall, ball.getX(), ball.getY());
 
     if(SDL_BlitSurface(leftBar.getSurf(), &srcLeftBar, gScreenSurface, &dstLeftBar) < 0
-    || SDL_BlitSurface(rightBar.getSurf(), &srcRightBar, gScreenSurface, &dstRightBar) < 0) {
+    || SDL_BlitSurface(rightBar.getSurf(), &srcRightBar, gScreenSurface, &dstRightBar) < 0
+    || SDL_BlitSurface(ball.getSurf(), &srcBall, gScreenSurface, &dstBall) < 0
+  ) {
       cout << "SDL could not blit! SDL Error: " << SDL_GetError() << endl;
       gQuit = true;
     }

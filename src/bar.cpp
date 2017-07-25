@@ -38,5 +38,5 @@ void Bar::move(int h, int bh) {
   this->y += stepY;
 
   if (y < 0 || y > h - bh)
-    stepY = 0;
+    this->stepY = 0;
 }
