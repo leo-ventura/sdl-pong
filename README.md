@@ -1,5 +1,5 @@
 # Pong
-Project to develop a SDL2 version of Atari's Pong in C++.
+Project to develop a SDL2 version of Pong in C++.
 
 ### About SDL2
 To install SDL2, check this link [here](https://wiki.libsdl.org/Installation).
