@@ -5,6 +5,7 @@ bool init();
 SDL_Surface* getMedia(std::string);
 bool loadMedia();
 void closeAll();
+void loadFont(int);
 SDL_Surface* loadText(TTF_Font, std::string, SDL_Color);
 void putDimensions(SDL_Rect*, int, int, int, int, SDL_Rect*, int, int);
 void startGame();

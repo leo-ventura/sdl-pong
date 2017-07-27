@@ -40,3 +40,12 @@ void Bar::move(int h, int bh) {
   if (y < 0 || y > h - bh)
     this->stepY = 0;
 }
+
+/*void Bar::collision(int ballx, int bally) {
+  if(this->x + BAR_WIDTH < ballx
+  && this->x > ballx
+  && this->y > bally
+  && this->y + BAR_HEIGHT < bally) {
+    this->stepX *= -1;
+  }
+}*/

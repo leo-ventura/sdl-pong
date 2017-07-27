@@ -28,6 +28,7 @@ public:
 
   // other functions
   void move(int, int, int, int);
+  void collision(int, int);
 };
 
 #endif

@@ -80,32 +80,37 @@ void closeAll() {
 
   SDL_FreeSurface(gScreenSurface);
   SDL_FreeSurface(gBarSurface);
-  //SDL_FreeSurface(gBallSurface);
+  SDL_FreeSurface(gBallSurface);
   gScreenSurface = NULL;
   gBarSurface = NULL;
-  //gBallSurface = NULL;
+  gBallSurface = NULL;
 
   SDL_DestroyWindow(gWindow);
   gWindow = NULL;
 
+  TTF_CloseFont(gFont);
+  gFont = NULL;
+
+  TTF_Quit();
   IMG_Quit();
   SDL_Quit();
 }
 
-void loadFont(TTF_Font* font, int size) {
-  font = TTF_OpenFont("../images/alagard_BitFont.ttf", size);
-  if (!font) {
+void loadFont(int size) {
+  gFont = TTF_OpenFont("../images/alagard_BitFont.ttf", size);
+  if (!gFont) {
     cout << "Failed to load font! Error: " << TTF_GetError() << endl;
     gQuit = true;
   }
   if(_DEBUG) cout << "[Loaded font]" << endl;
 }
 
-SDL_Surface* loadText(TTF_Font* font, string text, SDL_Color color) {
+SDL_Surface* loadText(string text, SDL_Color color) {
 
   SDL_Surface *optimizedTextSurface;
 
-  SDL_Surface *textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+  SDL_Surface *textSurface = TTF_RenderText_Solid(gFont, text.c_str(), color);
+
   if (!textSurface) {
     cout << "Unable to render text. Error: " << TTF_GetError() << endl;
     gQuit = true;
@@ -129,6 +134,23 @@ void putDimensions(SDL_Rect* src, int srcw, int srch, SDL_Rect* dst, int dstx, i
   dst->x = dstx;
   dst->y = dsty;
 }
+
+/*void collision(Bar *bar, Ball *ball) {
+  if(_DEBUG)
+    cout << "[entered collision]" << endl;
+
+  if(_DEBUG)
+    cout << "[bar->getX() is giving me " << bar->getX() << "]" << endl;
+
+  if(bar->getX() + BAR_WIDTH < ball->getX()
+  && bar->getX() > ball->getX()
+  && bar->getY() > ball->getY()
+  && bar->getY() + BAR_HEIGHT < ball->getY()) {
+    if(_DEBUG)
+      cout << "[has collided]" << endl;
+    ball->setStepX(-ball->getStepX());
+  }
+}*/
 
 void startGame() {
 
@@ -183,6 +205,11 @@ void startGame() {
     rightBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
     ball.move(BALL_HEIGHT, BALL_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH);
 
+    ball.collision(leftBar.getX(), leftBar.getY());
+    ball.collision(rightBar.getX(), rightBar.getY());
+    //leftBar.collision(ball.getX(), ball.getY());
+    //rightBar.collision(ball.getX(), ball.getY());
+
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00));
 
     // putDimensions prototype
@@ -206,15 +233,14 @@ void startGame() {
 void menu() {
   unsigned int cursor = 0;
   SDL_Event e;
-  TTF_Font* font = NULL;
-  SDL_Surface* start, help, exitgame;
-  SDL_Rect dstStart, srcStart, dstHelp, dstExit;
+  SDL_Surface *start, *help, *exitGame;
+  SDL_Rect dstStart, srcStart, dstHelp, srcHelp, dstExit, srcExit;
   SDL_Color color = {255, 255, 255};
 
   if(_DEBUG)
     cout << "[Menu opened]" << endl;
 
-  loadFont(font, 50);
+  loadFont(50);
 
   while(!gQuit) {
     while (SDL_PollEvent(&e) != 0) {
@@ -238,8 +264,11 @@ void menu() {
                 gQuit = true;
                 break;
             }
-          }
-          else if (e.key.keysym.sym == SDLK_DOWN) {
+          } else if(e.key.keysym.sym == SDLK_ESCAPE) {
+            if(_DEBUG)
+              cout << "[esc pressed]" << endl;
+            gQuit = true;
+          } else if (e.key.keysym.sym == SDLK_DOWN) {
             cursor = (cursor + 1)%3;
             if (_DEBUG) cout << "[Cursor is at pos " << cursor << "]" << endl;
           } else if (e.key.keysym.sym == SDLK_UP) {
@@ -249,13 +278,21 @@ void menu() {
           break;
       }
     }
+
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00));
 
-    putDimensions(&srcStart, 50, 150, &dstStart, WINDOW_WIDTH/2-75, 150);
+    // putDimensions(SDL_Rect* src, int srcw, int srch, SDL_Rect* dst, int dstx, int dsty)
+    putDimensions(&srcStart, 200, 75, &dstStart, WINDOW_WIDTH/2-75, 150);
+    putDimensions(&srcHelp, 200, 75, &dstHelp, WINDOW_WIDTH/2-75, 225);
+    putDimensions(&srcExit, 200, 75, &dstExit, WINDOW_WIDTH/2-75, 300);
 
-    start = loadText(font, "Start", color);
+    start = loadText("Start", color);
+    help = loadText("Help", color);
+    exitGame = loadText("Exit", color);
 
-    if(SDL_BlitSurface(start, &srcStart, gScreenSurface, &dstStart) < 0) {
+    if(SDL_BlitSurface(start, &srcStart, gScreenSurface, &dstStart) < 0
+    || SDL_BlitSurface(help, &srcHelp, gScreenSurface, &dstHelp) < 0
+    || SDL_BlitSurface(exitGame, &srcExit, gScreenSurface, &dstExit) < 0) {
       cout << "SDL could not blit! SDL Error: " << SDL_GetError() << endl;
       gQuit = true;
     }

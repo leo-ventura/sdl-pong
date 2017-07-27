@@ -30,7 +30,6 @@ int Ball::getH() {return h;}
 
 SDL_Surface* Ball::getSurf() {return surf;}
 
-
 void Ball::move(int ballh, int ballw, int screenh, int screenw) {
   this->x += stepX;
   this->y += stepY;
@@ -40,4 +39,19 @@ void Ball::move(int ballh, int ballw, int screenh, int screenw) {
 
   if(y < 0 || y > screenh - ballh)
     this->stepY *= -1;
+}
+
+void Ball::collision(int barx, int bary) {
+
+  if(_DEBUG)
+    std::cout << "[entered collision]" << std::endl;
+
+  if(barx + BAR_WIDTH < this->x
+  && barx > this->x
+  && bary > this->y
+  && bary + BAR_HEIGHT < this->y) {
+    if(_DEBUG)
+      std::cout << "[has collided]" << std::endl;
+    this->stepX *= -1;
+  }
 }
