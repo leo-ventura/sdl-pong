@@ -14,5 +14,6 @@ extern SDL_Surface *gScreenSurface;
 extern SDL_Window *gWindow;
 extern SDL_Surface *gBarSurface;
 extern SDL_Surface *gBallSurface;
+extern TTF_Font *gFont;
 
 #endif
