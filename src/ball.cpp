@@ -43,15 +43,10 @@ void Ball::move(int ballh, int ballw, int screenh, int screenw) {
 
 void Ball::collision(int barx, int bary) {
 
-  if(_DEBUG)
-    std::cout << "[entered collision]" << std::endl;
-
-  if(barx + BAR_WIDTH < this->x
-  && barx > this->x
-  && bary > this->y
-  && bary + BAR_HEIGHT < this->y) {
-    if(_DEBUG)
-      std::cout << "[has collided]" << std::endl;
+  if(this->x < barx + BAR_WIDTH
+  && this->x > barx
+  && this->y > bary
+  && this->y < bary + BAR_HEIGHT) {
     this->stepX *= -1;
   }
 }

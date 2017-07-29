@@ -205,8 +205,11 @@ void startGame() {
     rightBar.move(WINDOW_HEIGHT, BAR_HEIGHT);
     ball.move(BALL_HEIGHT, BALL_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH);
 
+    // collision between left bar and ball
     ball.collision(leftBar.getX(), leftBar.getY());
+    // collision between right bar and ball
     ball.collision(rightBar.getX(), rightBar.getY());
+
     //leftBar.collision(ball.getX(), ball.getY());
     //rightBar.collision(ball.getX(), ball.getY());
 
